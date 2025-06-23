@@ -3,8 +3,12 @@ import { BiSolidHide } from "react-icons/bi";
 import { FaCircleQuestion, FaEye } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { regUserSlice } from "../../features/users/userSlice";
+import toast from "react-hot-toast";
 const Register = () => {
   const [showText, setShowText] = useState(false);
+  const dispatch = useDispatch();
 
   const [showEye, setShowEye] = useState(false);
 
@@ -52,23 +56,27 @@ const Register = () => {
     });
   };
 
-  const handleSignup = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/reg-user", {
-        f_name,
-        l_name,
-        date,
-        month,
-        year,
-        gender,
-        email,
-        password,
-      });
+  const { user, userLoading, userError, userSuccess, userMessage } =
+    useSelector((state) => state.auth);
 
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (userSuccess) {
+      toast.success("Please enter all the fields");
     }
+  }, [userSuccess]);
+
+  const handleSignup = async () => {
+    const userdata = {
+      email,
+      password,
+      f_name,
+      l_name,
+      date,
+      month,
+      year,
+      gender,
+    };
+    dispatch(regUserSlice(userdata));
   };
 
   useEffect(() => {

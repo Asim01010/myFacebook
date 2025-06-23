@@ -1,10 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { regUserService } from "./userService";
+import { regUserService } from "./userService.js";
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user"))
-    ? localStorage.getItem("user")
-    : null,
+  user: JSON.parse(localStorage.getItem("user")) || null,
   userLoading: false,
   userSuccess: false,
   userError: false,
@@ -17,7 +15,8 @@ export const regUserSlice = createAsyncThunk(
     try {
       return await regUserService(userdata);
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data.userError);
+      //   console.log(error);
     }
   }
 );
@@ -25,7 +24,14 @@ export const regUserSlice = createAsyncThunk(
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    userReset: (state) => {
+      state.userError = false;
+      state.userLoading = false;
+      state.userMessage = "";
+      state.userSuccess = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(regUserSlice.pending, (state, action) => {
@@ -33,15 +39,18 @@ export const userSlice = createSlice({
       })
       .addCase(regUserSlice.rejected, (state, action) => {
         state.userError = true;
+        state.userSuccess = false;
         state.userMessage = action.payload;
         state.userLoading = false;
       })
       .addCase(regUserSlice.fulfilled, (state, action) => {
         state.userLoading = false;
         state.userSuccess = true;
+        state.userError = false;
         state.user = action.payload;
       });
   },
 });
 
 export default userSlice.reducer;
+export const { userReset } = userSlice.actions;
