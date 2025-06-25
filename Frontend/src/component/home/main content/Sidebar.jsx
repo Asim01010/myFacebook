@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { FaChevronDown, FaUser } from "react-icons/fa";
 import { sidebar_data } from "../data/SidebarData";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
+
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <div className="h-[90vh] p-2 bg-gray-100 overflow-y-scroll hide-scroll scroll-fb">
       <div className="flex gap-2 py-2 px-2 hover:bg-gray-200 rounded-md cursor-pointer">
@@ -11,7 +15,9 @@ const Sidebar = () => {
           <div className="w-[35px] h-[35px] bg-gray-200 border-2 border-gray-300 rounded-full flex items-center justify-center">
             <FaUser size={22} className="text-gray-500" />
           </div>
-          <h2 className="font-semibold">Muhammad Asim</h2>
+          <h2 className="font-semibold capitalize">
+            {user.f_name} {user.l_name}
+          </h2>
         </div>
       </div>
       <motion.ul

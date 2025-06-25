@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BiSolidHide } from "react-icons/bi";
 import { FaCircleQuestion, FaEye } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { regUserSlice } from "../../features/users/userSlice";
+import { regUserSlice, userReset } from "../../features/users/userSlice";
 import toast from "react-hot-toast";
 const Register = () => {
   const [showText, setShowText] = useState(false);
@@ -59,11 +59,19 @@ const Register = () => {
   const { user, userLoading, userError, userSuccess, userMessage } =
     useSelector((state) => state.auth);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (userSuccess) {
+    if (userError) {
       toast.success("Please enter all the fields");
     }
-  }, [userSuccess]);
+
+    if (userSuccess) {
+      navigate("/verify-otp");
+    }
+
+    dispatch(userReset());
+  }, [userError, userSuccess]);
 
   const handleSignup = async () => {
     const userdata = {

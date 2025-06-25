@@ -34,6 +34,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please enter all gender"],
     },
+    otp: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

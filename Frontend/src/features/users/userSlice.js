@@ -42,6 +42,7 @@ export const userSlice = createSlice({
         state.userSuccess = false;
         state.userMessage = action.payload;
         state.userLoading = false;
+        state.user = null;
       })
       .addCase(regUserSlice.fulfilled, (state, action) => {
         state.userLoading = false;

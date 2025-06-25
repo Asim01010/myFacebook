@@ -1,7 +1,10 @@
 import React from "react";
 import { FaUser } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const AddPost = () => {
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <>
       <div className=" py-2 px-4 shadow-md rounded-xl bg-white my-3 w-[80%] mx-auto">
@@ -10,7 +13,7 @@ const AddPost = () => {
             <FaUser size={22} />
           </div>
           <div className="rounded-full w-full bg-gray-100 p-2 text-gray-600">
-            Whats on your mind, Muhammad?
+            Whats on your mind, {user.f_name}
           </div>
         </div>
         <hr className="my-3 border-0 h-[1px] bg-gray-300" />
