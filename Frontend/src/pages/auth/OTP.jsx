@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useDispatch, useSelector } from "react-redux";
+import { userReset, verifyUserOtp } from "../../features/users/userSlice";
+import { useNavigate } from "react-router-dom";
 const OTPVerification = () => {
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [isVerified, setIsVerified] = useState(false);
@@ -38,16 +40,29 @@ const OTPVerification = () => {
       inputRefs.current[index - 1].focus();
     }
   };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user, userLoading, userError, userSuccess, userMessage } =
+    useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (userError) {
+      console.log(userMessage);
+    }
+    if (userSuccess) {
+      navigate("/home");
+    }
+    dispatch(userReset());
+  }, [userError, userSuccess]);
 
   const verifyOtp = () => {
-    // Demo verification - correct OTP is "123456"
-    const isValid = otp.join("") === "123456";
+    const enteredOTP = otp.join("");
 
-    if (isValid) {
-      setIsVerified(true);
-    } else {
-      setIsError(true);
-    }
+    const otpdata = {
+      otp: enteredOTP,
+      id: user?._id,
+    };
+    dispatch(verifyUserOtp(otpdata));
   };
 
   const resendOtp = () => {

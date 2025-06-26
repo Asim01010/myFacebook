@@ -1,6 +1,7 @@
 import React from "react";
 import { FaUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import UltraButton from "./GsapButton";
 
 const AddPost = () => {
   const { user } = useSelector((state) => state.auth);
@@ -41,6 +42,7 @@ const AddPost = () => {
           </div>
         </div>
       </div>
+      <UltraButton />
     </>
   );
 };

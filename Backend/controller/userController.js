@@ -200,3 +200,23 @@ export const verifyOTP = async (req, res) => {
     throw new Error("invalid OTP");
   }
 };
+
+export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("please enter all the fields");
+  }
+  // check if the email is correct
+  const checkmail = await regUser.findOne({ email });
+  if (!checkmail) {
+    res.status(404);
+    throw new Error("Invalid email");
+  }
+  if (await bcrypt.compare(password, checkmail.password)) {
+    res.send(checkmail);
+  } else {
+    res.status(401);
+    throw new Error("please enter a valid password");
+  }
+};

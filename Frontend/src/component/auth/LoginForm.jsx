@@ -2,8 +2,10 @@ import { Button } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { FaEye, FaRegEyeSlash } from "react-icons/fa";
-import { Link, Links } from "react-router-dom";
-
+import { Link, Links, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { LoginUserSlice, userReset } from "../../features/users/userSlice";
+import toast from "react-hot-toast";
 const LoginForm = () => {
   const [showPass, setShowPass] = useState(false);
   const [showEye, setShowEye] = useState(false);
@@ -29,6 +31,31 @@ const LoginForm = () => {
       setShowPass(false);
     }
   }, [password]);
+
+  const { user, userLoading, userError, userMessage, userSuccess } =
+    useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const loginHandler = async () => {
+    const loginData = {
+      email,
+      password,
+    };
+
+    dispatch(LoginUserSlice(loginData));
+  };
+
+  useEffect(() => {
+    if (userError) {
+      toast.error(userMessage);
+    }
+
+    if (userSuccess) {
+      navigate("/home");
+    }
+    dispatch(userReset);
+  }, [userError]);
+
   return (
     <>
       <form className="flex gap-3 p-3 rounded-md flex-col items-center justify-center  shadow-lg bg-white ">
@@ -67,7 +94,11 @@ const LoginForm = () => {
             />
           )}
         </span>
-        <Button variant="contained" className="w-full font-semibold p-3 ">
+        <Button
+          onClick={loginHandler}
+          variant="contained"
+          className="w-full font-semibold p-3 "
+        >
           Login
         </Button>
 
