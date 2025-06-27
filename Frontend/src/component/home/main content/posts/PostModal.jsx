@@ -25,15 +25,13 @@ export default function BasicModal() {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
         BackdropProps={{
           style: {
             backgroundColor: "rgba(255, 255, 255, 0.5)",
           },
         }}
       >
-        <AddpostModal />
+        <AddpostModal handleClose={handleClose} />
       </Modal>
     </div>
   );

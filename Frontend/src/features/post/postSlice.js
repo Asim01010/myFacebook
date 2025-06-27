@@ -21,18 +21,18 @@ export const addPostData = createAsyncThunk(
 );
 
 export const postSlice = createSlice({
-  name: " post",
+  name: "post",
   initialState,
   reducers: {
     postRest: (state) => {
-      state.postMessage = false;
+      state.postMessage = "";
       state.postError = false;
       state.postSuccess = false;
       state.postLoading = false;
     },
   },
-  extraReducers: (biulder) => {
-    biulder
+  extraReducers: (builder) => {
+    builder
       .addCase(addPostData.pending, (state, action) => {
         state.postLoading = true;
       })

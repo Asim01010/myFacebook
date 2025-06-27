@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
-
+import { useDispatch, useSelector } from "react-redux";
 import {
   FaGift,
   FaImages,
@@ -14,7 +14,7 @@ import {
 import { RiGroupFill } from "react-icons/ri";
 import { GoSmiley } from "react-icons/go";
 import { IoChevronBackSharp } from "react-icons/io5";
-import useDispatch from "react-redux";
+
 import { motion } from "framer-motion";
 
 import toast from "react-hot-toast";
@@ -27,7 +27,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import { colors } from "./postdata/Postdata";
-import { addPostData } from "../../../../features/post/postSlice";
+import { addPostData, postRest } from "../../../../features/post/postSlice";
 
 const style = {
   position: "absolute",
@@ -41,7 +41,7 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal() {
+export default function BasicModal({ handleClose }) {
   const [open, setOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState({
     startColor: "#fff",
@@ -61,7 +61,7 @@ export default function BasicModal() {
   const [imageLoading, setImageLoading] = useState(false);
   const [imageLink, setImageLink] = useState("");
   const handleOpen = () => setOpen(true);
-  const handleClose = () => {
+  const openhandleClose = () => {
     setOpen(false);
     console.log("clicked");
   };
@@ -75,6 +75,8 @@ export default function BasicModal() {
     }
   }, [caption, mediaSelected]);
 
+  const { user } = useSelector((state) => state.auth);
+
   const handleImageChange = (e) => {
     let files = e.target.files[0];
     let image_url = URL.createObjectURL(files);
@@ -83,38 +85,61 @@ export default function BasicModal() {
     setMediaSelected(true);
   };
 
-  const uploadImage = async () => {
-    // username : dwtsjgcyf
-    // password : ls8frk5v
-    try {
-      setImageLoading(true);
-      const data = new FormData();
-      data.append("file", image);
-      data.append("upload_preset", "ls8frk5v");
+  // const uploadImage = async () => {
+  //   // username : dwtsjgcyf
+  //   // password : ls8frk5v
+  //   try {
+  //     setImageLoading(true);
+  //     const data = new FormData();
+  //     data.append("file", image);
+  //     data.append("upload_preset", "ls8frk5v");
 
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dwtsjgcyf/image/upload",
-        data
-      );
+  //     const response = await axios.post(
+  //       "https://api.cloudinary.com/v1_1/dwtsjgcyf/image/upload",
+  //       data
+  //     );
 
-      setImageLink(response.data.url);
-      console.log(response.data.url);
-      setImage(null);
-      setImagePreview(null);
-      setMedia(false);
-      handleClose();
-      setMediaSelected(false);
-      toast.success("Posted Successfully!");
-      return response.data.url;
-    } catch (error) {
-      console.log(error);
-    }
-    setImageLoading(false);
-  };
+  //     setImageLink(response.data.url);
+  //     console.log(response.data.url);
+  //     setImage(null);
+  //     setImagePreview(null);
+  //     setMedia(false);
+  //     handleClose();
+  //     setMediaSelected(false);
+  //     toast.success("Posted Successfully!");
+  //     return response.data.url;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   setImageLoading(false);
+  // };
+
+  const { post, postLoading, postError, postSuccess, postMessage } =
+    useSelector((state) => state.album);
   const dispatch = useDispatch();
   const handleAddPost = () => {
-    dispatch(addPostData());
+    const postData = {
+      caption,
+      background: selectedColor,
+      user_id: user?._id,
+    };
+
+    dispatch(addPostData(postData));
   };
+
+  useEffect(() => {
+    if (postError) {
+      toast.error(postMessage);
+    }
+    if (postSuccess) {
+      toast.success("posted successfully");
+      setCaption("");
+      setOpenColor(false);
+      setOpen(false);
+    }
+
+    dispatch(postRest());
+  }, [postError, postSuccess]);
 
   return (
     <>
