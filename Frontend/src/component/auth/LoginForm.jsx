@@ -54,7 +54,7 @@ const LoginForm = () => {
       navigate("/home");
     }
     dispatch(userReset);
-  }, [userError]);
+  }, [userError, userSuccess]);
 
   return (
     <>
