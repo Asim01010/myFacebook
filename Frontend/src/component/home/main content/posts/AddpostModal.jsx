@@ -61,10 +61,10 @@ export default function BasicModal({ handleClose }) {
   const [imageLoading, setImageLoading] = useState(false);
   const [imageLink, setImageLink] = useState("");
   const handleOpen = () => setOpen(true);
-  const openhandleClose = () => {
-    setOpen(false);
-    console.log("clicked");
-  };
+  // const openhandleClose = () => {
+  //   setOpen(false);
+  //   console.log("clicked");
+  // };
 
   const [openColor, setOpenColor] = useState(false);
 

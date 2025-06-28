@@ -10,3 +10,8 @@ export const postService = async (userpost) => {
   );
   return response.data; // return only data, not full response
 };
+
+export const getPostService = async () => {
+  const response = await axios.get("http://localhost:5000/get-all-posts");
+  return response.data;
+};

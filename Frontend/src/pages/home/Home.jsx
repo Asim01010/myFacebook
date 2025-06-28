@@ -15,11 +15,11 @@ const Home = () => {
         <div className="xl:col-span-3  xl:block hidden">
           <Sidebar />
         </div>
-        <div className="xl:col-span-6 lg:col-span-8 ">
+        <div className="xl:col-span-6 col-span-8 ">
           {/* maincontent */}
           <MainContent />
         </div>
-        <div className="md:col-span-3 col-span-12">
+        <div className="col-span-3 hidden lg:block">
           {/* ad content  */}
           <AdContent />
         </div>

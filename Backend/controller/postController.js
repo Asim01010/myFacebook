@@ -16,3 +16,8 @@ export const postController = async (req, res) => {
   });
   res.send(newPost);
 };
+
+export const getPostController = async (req, res) => {
+  const allPost = await postModal.find();
+  res.send(allPost);
+};

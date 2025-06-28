@@ -1,24 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaGlobe, FaUser } from "react-icons/fa";
-
+// import { GoDot, GoDotFill } from "react-icons/go";
+// import { FiThumbsUp } from "react-icons/fi";
 import { PiShareFat } from "react-icons/pi";
 // import moment from "moment";
 // import EmojiReactions from "../Feeds/EmojiReactions";
 import { useDispatch, useSelector } from "react-redux";
-
-import axios from "axios";
+// import { getReactionsData } from "../../../features/posts/postSlice";
+// import axios from "axios";
 // import { emojiMap } from "./emojis";
 // import CommentModal from "../Feeds/CommentModal";
-
+// import { getMyData } from "../../../features/users/userSlice";
 import { RxDotsHorizontal } from "react-icons/rx";
-// import OptionMenu from "./OptionMenu.jsx";
+import OptionMenu from "./OptionMenu.jsx";
 
 const GetPosts = ({
-  background = {
-    startColor: "#ffffff",
-    endColor: "#ffffff",
-    image: "",
-  },
+  background,
   caption,
   _id,
   createdAt,
@@ -31,18 +28,18 @@ const GetPosts = ({
 
   const { posts } = useSelector((state) => state.album);
 
-  const getLikes = async () => {
-    let response = await axios.get(
-      `http://localhost:5174/api/posts/get-reactions/${_id}`
-    );
-    setLikes(response.data);
-  };
+  // const getLikes = async () => {
+  //   let response = await axios.get(
+  //     `http://localhost:5174/api/posts/get-reactions/${_id}`
+  //   );
+  //   setLikes(response.data);
+  // };
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    getLikes();
-  }, [posts]);
+  // useEffect(() => {
+  //   getLikes();
+  // }, [posts]);
 
   const isWhite = (color) => {
     const whiteVariants = ["#fff", "#ffffff", "white"];
@@ -64,7 +61,9 @@ const GetPosts = ({
             </div>
           </div>
           <div className="">
-            <h6 className="font-semibold text-sm">User name</h6>
+            <h6 className="font-semibold text-sm">
+              {user_id?.f_name} {user_id?.l_name}
+            </h6>
             <div className="flex items-center gap-1">
               <div className="text-sm font-semibold text-gray-500">
                 {/* {moment().diff(moment(createdAt), "hours") < 24
@@ -91,6 +90,14 @@ const GetPosts = ({
         <p className="text-gray-900 p-3 my-2 capitalize">{caption}</p>
       )}
 
+      {/* <div
+        className="h-[400px] "
+        style={{
+          background: background.image
+            ? `url(${background.image})`
+            : `linear-gradient(${background?.startColor},${background?.endColor})`,
+        }}
+      ></div> */}
       {(background.image || postImage || !isWhite(background.startColor)) && (
         <div
           className="h-[400px] relative"
@@ -116,7 +123,7 @@ const GetPosts = ({
       <div className="flex gap-2 p-3">
         <div className="flex justify-between w-full">
           <p className="text-gray-600 flex gap-1 m-0">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               {(() => {
                 const seen = new Set();
                 const reactions = [];
@@ -152,15 +159,15 @@ const GetPosts = ({
                   );
                 });
               })()}
-            </div>
-            <div className="flex justify-between items-center">
+            </div> */}
+            {/* <div className="flex justify-between items-center">
               {likes?.length}
-            </div>
+            </div> */}
           </p>
           {comments?.length} comments
         </div>
       </div>
-      <hr className="bg-gray-300 h-[1px]  border-0" />
+      <hr className="bg-gray-300 h-[1px] border " />
       <div className="flex justify-between items-center p-3">
         <div className="flex gap-2 justify-center items-center w-full">
           {/* <EmojiReactions post_id={_id} likes={likes} /> */}
