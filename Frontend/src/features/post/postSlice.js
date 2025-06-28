@@ -55,7 +55,7 @@ export const postSlice = createSlice({
         state.postMessage = action.payload;
         state.postLoading = false;
         state.postSuccess = true;
-        state.post.push(action.payload);
+        state.post.unshift(action.payload);
       })
       .addCase(getPostData.pending, (state, action) => {
         state.postLoading = true;
@@ -66,10 +66,10 @@ export const postSlice = createSlice({
         state.postMessage = action.payload;
       })
       .addCase(getPostData.fulfilled, (state, action) => {
-        state.post = action.payload;
         state.postError = false;
         state.postLoading = false;
         state.postSuccess = true;
+        state.post = action.payload;
       });
   },
 });
