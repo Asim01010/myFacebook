@@ -38,10 +38,10 @@ export default function BasicModal({ handleClose }) {
   const [imagePreview, setImagePreview] = useState(null);
   const [image, setImage] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
-
+  const [imageLink, setImageLink] = useState("");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { postError, postSuccess, postMessage } = useSelector(
+  const { postError, postSuccess, postMessage, postLoading } = useSelector(
     (state) => state.album
   );
 
@@ -77,23 +77,21 @@ export default function BasicModal({ handleClose }) {
       setImageLoading(true);
       const data = new FormData();
 
-      data.append("upload_preset", image); // ✅ set your Cloudinary upload preset
-      data.append("cloud_name", "dxfieyp9g"); // ✅
-
-      // data.append("file", image);
-      // data.append("upload_preset", "dxfieyp9g");
-
+      data.append("file", image);
+      data.append("upload_preset", "qw4hddqcrg");
       const response = await axios.post(
         "https://api.cloudinary.com/v1_1/dxfieyp9g/image/upload",
         data
       );
 
+      console.log(response.data.url);
+      setImageLink(response.data.url);
       setImageLoading(false);
       setImage(null);
       setImagePreview(null);
       setMedia(false);
       setMediaSelected(false);
-
+      handleClose();
       return response.data.secure_url;
     } catch (error) {
       console.error("Image upload failed:", error);
@@ -114,7 +112,7 @@ export default function BasicModal({ handleClose }) {
       caption,
       background: selectedColor,
       user_id: user?._id,
-      postImage,
+      image: await uploadImage(),
     };
 
     dispatch(addPostData(postData));
@@ -318,14 +316,14 @@ export default function BasicModal({ handleClose }) {
         <div className="p-4">
           <Button
             onClick={handleAddPost}
-            disabled={show || imageLoading}
+            disabled={show || imageLoading || postLoading}
             variant="contained"
             style={{
-              background: show || imageLoading ? "#99a1af" : "",
+              background: show || imageLoading || postLoading ? "#99a1af" : "",
             }}
             className="w-full"
           >
-            {imageLoading ? (
+            {imageLoading || postLoading ? (
               <ClockLoader size={25} color="white" />
             ) : (
               "Add Post"

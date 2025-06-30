@@ -1,18 +1,19 @@
 import { postModal } from "../models/postmodal.js";
 
 export const postController = async (req, res) => {
-  const { caption, background } = req.body;
+  const { caption, background, postImage } = req.body;
   const { user_id } = req.params;
 
-  if (!caption) {
-    res.status(400);
-    throw new Error("caption is not entered");
-  }
+  // if (!caption) {
+  //   res.status(400);
+  //   throw new Error("caption is not entered");
+  // }
 
   const newPost = await postModal.create({
     caption,
-    // background,
+    background,
     user_id,
+    postImage,
   });
   res.send(newPost);
 };

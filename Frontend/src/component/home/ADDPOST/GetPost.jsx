@@ -2,7 +2,7 @@ import React from "react";
 import { FaGlobe, FaUser } from "react-icons/fa";
 import { PiShareFat } from "react-icons/pi";
 import { RxDotsHorizontal } from "react-icons/rx";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 // import OptionMenu from "./OptionMenu.jsx";
 
 const GetPosts = ({
@@ -14,14 +14,11 @@ const GetPosts = ({
   comments,
   user_id,
 }) => {
-  const { user } = useSelector((state) => state.auth);
-  const { post, postLoading, postError, postSuccess, postMessage } =
-    useSelector((state) => state.album);
-  const dispatch = useDispatch();
-  const uploadImage = async () => {
-    // username: dxfieyp9g;
-    // password :Camden;
-  };
+  // const { user } = useSelector((state) => state.auth);
+  // const { post, postLoading, postError, postSuccess, postMessage } =
+  //   useSelector((state) => state.album);
+  // const dispatch = useDispatch();
+
   return (
     <div className="shadow-lg xl:w-[70%] mx-auto lg:w-[80%] md:w-[90%] w-[95%] bg-white rounded-md my-2">
       {/* Header */}
